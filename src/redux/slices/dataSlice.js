@@ -20,7 +20,6 @@ const dataSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchDataAsync.fulfilled, (state, action) => {
-        console.log("SUCCEEDED");
         state.status = "succeeded";
         state.data = action.payload;
       })

@@ -50,6 +50,10 @@ h3 {
   color: #999;
 }
 
+.disconnect {
+  cursor: pointer;
+}
+
 h1 {
   width: 100%;
   color: red;

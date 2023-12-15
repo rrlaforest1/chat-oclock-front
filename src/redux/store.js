@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import messageReducer from "./slices/messageSlice";
 import settingsReducer from "./slices/settingsSlice";
 import dataReducer, { fetchDataAsync } from "./slices/dataSlice";
-import connexionReducer from "./slices/connexionSlice";
+import connexionReducer, { fetchUserAsync } from "./slices/connexionSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,5 +14,6 @@ const store = configureStore({
 });
 
 store.dispatch(fetchDataAsync());
+// store.dispatch(fetchUserAsync());
 
 export default store;

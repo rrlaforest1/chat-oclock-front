@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import myApi from "./../../service/service";
 import {
   toggleSettings,
   // updateUserInfo,
 } from "../../redux/slices/settingsSlice";
-import { authState } from "../../redux/slices/connexionSlice";
+import {
+  setConnexion,
+  fetchUserAsync,
+} from "../../redux/slices/connexionSlice";
 
 import "./Settings.css";
 
@@ -14,6 +18,9 @@ function Settings() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [emailConnect, setEmailConnect] = useState("");
+  const [passwordConnect, setPasswordConnect] = useState("");
+
   const dispatch = useDispatch();
 
   const baseURL = import.meta.env.VITE_BACKEND_URL;
@@ -21,11 +28,16 @@ function Settings() {
   const { open } = useSelector((state) => state.settings);
   const { user, isLoggedIn } = useSelector((state) => state.connexion);
 
-  // console.log("settings user", user);
-  // console.log("settings isLoggedIn", isLoggedIn);
+  console.log("settings user", user);
+  console.log("settings isLoggedIn", isLoggedIn);
 
   const handleClick = () => {
     dispatch(toggleSettings());
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    dispatch(fetchUserAsync());
   };
 
   const handleSubmit = async (type, event) => {
@@ -36,8 +48,8 @@ function Settings() {
 
     if (type === "connect") {
       userInfo = {
-        email,
-        password,
+        email: emailConnect,
+        password: passwordConnect,
       };
     } else {
       userInfo = {
@@ -48,16 +60,11 @@ function Settings() {
     }
 
     try {
-      const response = await axios.post(
-        `${baseURL}/api/auth/${type}`,
-        userInfo
-      );
+      const response = await myApi.connect(userInfo);
       localStorage.setItem("authToken", response.data.token);
-
-      console.log("response settings connect: ", response);
-
       // verifier mon utilisateur
-      dispatch(authState());
+      dispatch(fetchUserAsync());
+      dispatch(toggleSettings());
     } catch (error) {}
     setEmail("");
     setPassword("");
@@ -90,45 +97,53 @@ function Settings() {
             X
           </button>
 
-          <h3>Connect</h3>
-          <form onSubmit={(e) => handleSubmit("connect", e)}>
-            <input
-              placeholder="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              placeholder="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button>Send</button>
-          </form>
+          {isLoggedIn ? (
+            <h3 className="disconnect" onClick={handleLogout}>
+              Disconnect
+            </h3>
+          ) : (
+            <>
+              <h3>Connect</h3>
+              <form onSubmit={(e) => handleSubmit("connect", e)}>
+                <input
+                  placeholder="email"
+                  type="email"
+                  value={emailConnect}
+                  onChange={(e) => setEmailConnect(e.target.value)}
+                />
+                <input
+                  placeholder="password"
+                  type="password"
+                  value={passwordConnect}
+                  onChange={(e) => setPasswordConnect(e.target.value)}
+                />
+                <button>Send</button>
+              </form>
 
-          <h3>Register</h3>
-          <form onSubmit={(e) => handleSubmit("register", e)}>
-            <input
-              placeholder="Username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-              placeholder="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              placeholder="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button>Send</button>
-          </form>
+              <h3>Register</h3>
+              <form onSubmit={(e) => handleSubmit("register", e)}>
+                <input
+                  placeholder="Username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <input
+                  placeholder="Email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                  placeholder="Password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button>Send</button>
+              </form>
+            </>
+          )}
         </div>
       </div>
     </>

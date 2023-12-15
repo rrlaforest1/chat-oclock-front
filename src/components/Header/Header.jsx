@@ -12,8 +12,7 @@ function Header() {
         <Settings />
       </div>
       <h3>
-        {console.log(user)}
-        {user !== null ? user._id + ": " : ""}Chat now with your frinds! or
+        {isLoggedIn ? user.username + ": " : ""}Chat now with your frinds! or
         yourself...
       </h3>
     </>

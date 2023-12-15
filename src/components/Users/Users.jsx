@@ -8,7 +8,6 @@ function Users() {
 
   useEffect(() => {
     dispatch(fetchDataAsync());
-    console.log("On Users useEffect data", data);
   }, [dispatch]);
 
   if (status == "loading") {
@@ -19,8 +18,7 @@ function Users() {
     return <p>Error : {error}</p>;
   }
 
-  console.log("PASOOOO");
-  console.log("data", data);
+  // console.log("data comp user", data);
 
   return (
     <>
