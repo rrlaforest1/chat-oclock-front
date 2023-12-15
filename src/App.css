@@ -1,0 +1,141 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a,
+button {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  background-color: black;
+  font-family: 'Courier New', Courier, monospace;
+  background-image: url("https://art.teleportacia.org/observation/vernacular/stars/ss035.gif");
+}
+
+#root {
+  margin: 0 auto;
+  max-width: 768px;
+  padding: 5px;
+  background-color: #ccc;
+  border-top: 2px solid #eee;
+  border-left: 2px solid #eee;
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-component {
+  display: flex;
+  text-align: center;
+  border-top: 2px solid #333;
+  border-left: 2px solid #333;
+  border-right: 2px solid #eee;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 5px;
+}
+
+h3 {
+  padding: 5px;
+  color: #999;
+}
+
+h1 {
+  width: 100%;
+  color: red;
+  background-color: #ccc;
+  padding: 10px;
+
+}
+
+.messages-list {
+  background-color: white;
+  padding: 10px;
+  border-top: 2px solid #333;
+  border-left: 2px solid #333;
+  border-right: 2px solid #eee;
+  border-bottom: 2px solid #eee;
+  overflow-y: scroll;
+  height: 300px;
+  height: 100%;
+
+
+  .message {
+    display: flex;
+
+    .message-author {
+      color: blue;
+      margin-right: 10px;
+      font-weight: 900;
+    }
+
+    .message-content {
+      font-weight: 100;
+    }
+  }
+
+}
+
+.form-component {
+  background-color: white;
+  margin-top: 5px;
+  border-top: 2px solid #333;
+  border-left: 2px solid #333;
+  border-right: 2px solid #eee;
+  border-bottom: 2px solid #eee;
+
+  & form {
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+
+    & input {
+      height: 100%;
+      width: 100%;
+      padding: 5px;
+
+      &:focus-visible {
+        outline: none;
+      }
+    }
+
+    ::placeholder {
+      color: #ddd;
+      opacity: 1;
+      /* Firefox */
+    }
+
+    & button {
+      height: 100%;
+      width: 100px;
+      padding: 1rem;
+      border-top: 2px solid #eee;
+      border-left: 2px solid #eee;
+      border-right: 2px solid #333;
+      border-bottom: 2px solid #333;
+      cursor: pointer;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+
+      &:hover {
+        border-width: 1px;
+      }
+
+      &:active {
+        border-width: 0px;
+      }
+    }
+  }
+
+
+}
