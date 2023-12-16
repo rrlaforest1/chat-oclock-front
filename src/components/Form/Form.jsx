@@ -1,23 +1,28 @@
 import { useState } from "react";
+import myApi from "./../../service/service";
 import "./Form.css";
 
-import { useDispatch } from "react-redux";
-import { write } from "../../redux/slices/messageSlice";
+import { useSelector, useDispatch } from "react-redux";
+// import { write } from "../../redux/slices/messageSlice";
 
 function Form() {
   const [input, setInput] = useState("");
+  const { user } = useSelector((state) => state.connexion);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const theMessage = {
-      author: "Rony",
+      author: user.username,
       content: input,
     };
 
-    dispatch(write(theMessage));
+    const response = await myApi.postMessage({ message: input });
+    console.log("form response message", response);
+
+    // dispatch(write(theMessage));
     setInput("");
   };
 

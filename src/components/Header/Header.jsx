@@ -8,12 +8,12 @@ function Header() {
   return (
     <>
       <div className="header-component">
-        <h1>90's 0`clock Chat Room </h1>
+        <h1>90's 0`clock - Empanadas - Chat Room </h1>
         <Settings />
       </div>
       <h3>
-        {isLoggedIn ? user.username + ": " : ""}Chat now with your frinds! or
-        yourself...
+        <span>{isLoggedIn ? user.username + ":" : ""}</span> Chat now with your
+        frinds! or yourself...
       </h3>
     </>
   );

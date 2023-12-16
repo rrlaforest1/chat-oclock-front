@@ -13,6 +13,29 @@ myApi.getUserInfos = function () {
     .catch((error) => console.log(error));
 };
 
+myApi.getMessages = function () {
+  return myApi
+    .get("/api/message")
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => console.log(error));
+};
+
+myApi.postMessage = function (message) {
+  return myApi
+    .post("/api/message", message)
+    .then((response) => response)
+    .catch((error) => error);
+};
+
+myApi.register = function (userInfos) {
+  return myApi
+    .post("/api/auth/register", userInfos)
+    .then((response) => response)
+    .catch((error) => error);
+};
+
 myApi.connect = function (userInfos) {
   return myApi
     .post("/api/auth/connect", userInfos)

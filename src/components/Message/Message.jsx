@@ -1,11 +1,11 @@
-function Message({ IMessage }) {
+function Message({ user, message }) {
   return (
     <>
       <div className="message">
         <p className="message-author">
-          <strong>{IMessage.author}:</strong>
+          <strong>{user}:</strong>
         </p>
-        <p className="message-content">{IMessage.content}</p>
+        <p className="message-content">{message}</p>
       </div>
     </>
   );

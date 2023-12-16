@@ -26,7 +26,6 @@ const connexionSlice = createSlice({
         console.log("SUCCEEDED");
         state.status = "succeeded";
         state.user = action.payload;
-        console.log("action.payload", action.payload);
         if (action.payload) {
           state.isLoggedIn = true;
         } else {
@@ -41,5 +40,4 @@ const connexionSlice = createSlice({
   },
 });
 
-export const { setConnexion } = connexionSlice.actions;
 export default connexionSlice.reducer;

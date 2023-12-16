@@ -1,20 +1,36 @@
-import React from "react";
-import Message from "../Message/Message";
-
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllmessagesAsync } from "../../redux/slices/allMessagesSlice";
+import Message from "./../Message/Message";
 
 function MessageList() {
-  const messages = useSelector((state) => state.message);
+  const dispatch = useDispatch();
+  const { messages } = useSelector((state) => state.allmessages);
+
+  // async function fetchOneConversation() {
+  //   try {
+  //     const response = await myApi.get(`/messages/${id}`);
+  //     setMessages(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  useEffect(() => {
+    dispatch(fetchAllmessagesAsync());
+  }, []);
+
+  if (!messages) {
+    return <p>Loading ...</p>;
+  }
 
   return (
     <>
       <ul className="messages-list">
         {messages.map((message, messageIndex) => {
           return (
-            <li className={`msg-${message.id}`} key={messageIndex}>
-              <Message
-                IMessage={{ author: message.author, content: message.content }}
-              />
+            <li className="messages-list-message" key={messageIndex}>
+              <Message user={message.user.username} message={message.message} />
             </li>
           );
         })}

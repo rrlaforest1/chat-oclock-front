@@ -6,10 +6,7 @@ import {
   toggleSettings,
   // updateUserInfo,
 } from "../../redux/slices/settingsSlice";
-import {
-  setConnexion,
-  fetchUserAsync,
-} from "../../redux/slices/connexionSlice";
+import { fetchUserAsync } from "../../redux/slices/connexionSlice";
 
 import "./Settings.css";
 
@@ -28,9 +25,6 @@ function Settings() {
   const { open } = useSelector((state) => state.settings);
   const { user, isLoggedIn } = useSelector((state) => state.connexion);
 
-  console.log("settings user", user);
-  console.log("settings isLoggedIn", isLoggedIn);
-
   const handleClick = () => {
     dispatch(toggleSettings());
   };
@@ -42,7 +36,6 @@ function Settings() {
 
   const handleSubmit = async (type, event) => {
     event.preventDefault();
-    console.log("Submit");
     let userInfo = {};
     // dispatch(updateUserInfo({ email, password }));
 
@@ -60,11 +53,25 @@ function Settings() {
     }
 
     try {
-      const response = await myApi.connect(userInfo);
-      localStorage.setItem("authToken", response.data.token);
-      // verifier mon utilisateur
-      dispatch(fetchUserAsync());
-      dispatch(toggleSettings());
+      if (type === "connect") {
+        const response = await myApi.connect(userInfo);
+        localStorage.setItem("authToken", response.data.token);
+        // verifier mon utilisateur
+        dispatch(toggleSettings());
+        dispatch(fetchUserAsync());
+        setEmailConnect("");
+        setPasswordConnect("");
+      } else {
+        const responseRegister = await myApi.register(userInfo);
+        const response = await myApi.connect({ email, password });
+        localStorage.setItem("authToken", response.data.token);
+        // verifier mon utilisateur
+        dispatch(toggleSettings());
+        dispatch(fetchUserAsync());
+        setUsername("");
+        setEmail("");
+        setPassword("");
+      }
     } catch (error) {}
     setEmail("");
     setPassword("");

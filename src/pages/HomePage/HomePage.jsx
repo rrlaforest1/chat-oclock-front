@@ -10,7 +10,7 @@ function HomePage() {
       <Header />
       <MessageList />
       <Form />
-      <Users />
+      {/* <Users /> */}
     </>
   );
 }
