@@ -5,7 +5,6 @@ export const fetchAllmessagesAsync = createAsyncThunk(
   "data/getMessages",
   async () => {
     const data = await myApi.getMessages();
-    console.log("fetchAllmessagesAsync data: ", data);
     return data;
   }
 );
@@ -25,7 +24,6 @@ const allmessagesSlice = createSlice({
       })
       .addCase(fetchAllmessagesAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
-        console.log("action.payload", action.payload);
         state.messages = action.payload;
       })
       .addCase(fetchAllmessagesAsync.rejected, (state, action) => {

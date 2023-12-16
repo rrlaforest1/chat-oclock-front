@@ -13,6 +13,15 @@ myApi.getUserInfos = function () {
     .catch((error) => console.log(error));
 };
 
+myApi.getUsers = function () {
+  return myApi
+    .get("/api/user")
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => console.log(error));
+};
+
 myApi.getMessages = function () {
   return myApi
     .get("/api/message")
@@ -40,7 +49,10 @@ myApi.connect = function (userInfos) {
   return myApi
     .post("/api/auth/connect", userInfos)
     .then((response) => response)
-    .catch((error) => error);
+    .catch((error) => {
+      console.log("connect error", error);
+      return error;
+    });
 };
 
 myApi.interceptors.request.use((request) => {

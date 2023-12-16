@@ -2,14 +2,14 @@ import { useState } from "react";
 import myApi from "./../../service/service";
 import "./Form.css";
 
-import { useSelector, useDispatch } from "react-redux";
-// import { write } from "../../redux/slices/messageSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { updateLength } from "../../redux/slices/messagesLengthSlice";
 
 function Form() {
   const [input, setInput] = useState("");
-  const { user } = useSelector((state) => state.connexion);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector((state) => state.connexion);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,19 +22,21 @@ function Form() {
     const response = await myApi.postMessage({ message: input });
     console.log("form response message", response);
 
-    // dispatch(write(theMessage));
+    dispatch(updateLength());
     setInput("");
   };
 
   return (
     <>
-      <div className="form-component">
+      <div className={"form-component" + (!isLoggedIn ? " disabled" : "")}>
         <form onSubmit={handleSubmit}>
           <input
             id="message-text"
             type="text"
             autoComplete="off"
-            placeholder="Say Hello!"
+            placeholder={
+              !isLoggedIn ? "Connect yourself to start chatting!" : "Say Hello!"
+            }
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />

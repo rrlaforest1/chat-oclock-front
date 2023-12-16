@@ -66,4 +66,11 @@
             }
         }
     }
+
+    .connection-error {
+        font-size: 0.9rem;
+        color: red;
+        font-weight: 900;
+        margin: 5px 0;
+    }
 }

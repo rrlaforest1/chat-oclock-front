@@ -15,15 +15,15 @@ function Settings() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [errorConnect, setErrorConnect] = useState(null);
+
   const [emailConnect, setEmailConnect] = useState("");
   const [passwordConnect, setPasswordConnect] = useState("");
 
   const dispatch = useDispatch();
 
-  const baseURL = import.meta.env.VITE_BACKEND_URL;
-
   const { open } = useSelector((state) => state.settings);
-  const { user, isLoggedIn } = useSelector((state) => state.connexion);
+  const { isLoggedIn } = useSelector((state) => state.connexion);
 
   const handleClick = () => {
     dispatch(toggleSettings());
@@ -55,9 +55,19 @@ function Settings() {
     try {
       if (type === "connect") {
         const response = await myApi.connect(userInfo);
-        localStorage.setItem("authToken", response.data.token);
+        if (response.response && response.response.status === 400) {
+          dispatch(toggleSettings());
+          setErrorConnect(response.response.data.message);
+          setTimeout(() => {
+            setErrorConnect(null);
+          }, 1000 * 3);
+        }
+
+        if (response.data) {
+          localStorage.setItem("authToken", response.data.token);
+        }
+
         // verifier mon utilisateur
-        dispatch(toggleSettings());
         dispatch(fetchUserAsync());
         setEmailConnect("");
         setPasswordConnect("");
@@ -66,13 +76,14 @@ function Settings() {
         const response = await myApi.connect({ email, password });
         localStorage.setItem("authToken", response.data.token);
         // verifier mon utilisateur
-        dispatch(toggleSettings());
         dispatch(fetchUserAsync());
         setUsername("");
         setEmail("");
         setPassword("");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("response connect", error);
+    }
     setEmail("");
     setPassword("");
     dispatch(toggleSettings());
@@ -111,6 +122,9 @@ function Settings() {
           ) : (
             <>
               <h3>Connect</h3>
+              {errorConnect && (
+                <p className="connection-error">{errorConnect}</p>
+              )}
               <form onSubmit={(e) => handleSubmit("connect", e)}>
                 <input
                   placeholder="email"

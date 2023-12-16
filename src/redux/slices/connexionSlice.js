@@ -23,7 +23,6 @@ const connexionSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchUserAsync.fulfilled, (state, action) => {
-        console.log("SUCCEEDED");
         state.status = "succeeded";
         state.user = action.payload;
         if (action.payload) {

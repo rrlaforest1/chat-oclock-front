@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllmessagesAsync } from "../../redux/slices/allMessagesSlice";
 import Message from "./../Message/Message";
+import myApi from "../../service/service";
 
 function MessageList() {
+  const [users, setUsers] = useState([]);
   const dispatch = useDispatch();
   const { messages } = useSelector((state) => state.allmessages);
+  const { messagesLength } = useSelector((state) => state.msglength);
+  const { isLoggedIn } = useSelector((state) => state.connexion);
 
   // async function fetchOneConversation() {
   //   try {
@@ -16,25 +20,45 @@ function MessageList() {
   //   }
   // }
 
+  const fetchUsers = async () => {
+    const response = await myApi.getUsers();
+    setUsers(response);
+  };
+
   useEffect(() => {
     dispatch(fetchAllmessagesAsync());
-  }, []);
+    fetchUsers();
+  }, [messagesLength, isLoggedIn]);
 
-  if (!messages) {
+  if (!messages && !users.length) {
     return <p>Loading ...</p>;
   }
 
   return (
     <>
-      <ul className="messages-list">
-        {messages.map((message, messageIndex) => {
-          return (
-            <li className="messages-list-message" key={messageIndex}>
-              <Message user={message.user.username} message={message.message} />
-            </li>
-          );
-        })}
-      </ul>
+      <div className="messages-n-users">
+        <ul className="messages-list">
+          {messages.map((message, messageIndex) => {
+            return (
+              <li className="messages-list-message" key={messageIndex}>
+                <Message
+                  user={message.user.username}
+                  message={message.message}
+                />
+              </li>
+            );
+          })}
+        </ul>
+        <ul className="users-list">
+          {users.map((user, userIndex) => {
+            return (
+              <li className="users-list-user" key={userIndex}>
+                <p>{user.username}</p>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </>
   );
 }
