@@ -14,10 +14,10 @@ function Form() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const theMessage = {
-      author: user.username,
-      content: input,
-    };
+    // const theMessage = {
+    //   author: user.username,
+    //   content: input,
+    // };
 
     const response = await myApi.postMessage({ message: input });
     console.log("form response message", response);
